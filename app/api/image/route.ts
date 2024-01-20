@@ -7,15 +7,21 @@ const replicate = new Replicate({
 
 export async function POST(req: Request) {
   try {
-    const { image, Prompt, Keywords, NegativeKeywords, NumberImages } =
+    const { Image, Prompt, Keywords, NegativeKeywords, NumberImages } =
       await req.json();
+
+    if (!Image || !Prompt || !Keywords || !NegativeKeywords || !NumberImages) {
+      return new NextResponse("Missing required input fields", {
+        status: 400,
+      });
+    }
 
     const output = await replicate.run(
       "jagilley/controlnet-hough:854e8727697a057c525cdb45ab037f64ecca770a1769cc52287c2e56472a247b",
       {
         input: {
           eta: 0,
-          image: image,
+          image: Image,
           scale: 9,
           prompt: Prompt,
           a_prompt: Keywords,
@@ -32,7 +38,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(output);
   } catch (error) {
-    console.log("[IMAGE]", error);
+    console.log("[IMAGE] Error:", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

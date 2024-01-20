@@ -26,10 +26,13 @@ import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import Image from "next/image";
 
+import {
+  CldUploadButton,
+  CldImage,
+  CldUploadWidgetResults,
+} from "next-cloudinary";
+
 const FormSchema = z.object({
-  image: z.string().min(2, {
-    message: "Se requiere imagen.",
-  }),
   Prompt: z.string().min(2, {
     message: "La descripcion debe tener al menos 2 caracteres.",
   }),
@@ -44,13 +47,19 @@ const FormSchema = z.object({
   }),
 });
 
+type UploadResult = {
+  info: { public_id: string; url: string };
+  event: "success";
+};
+
 export function InputForm() {
   const [images, setImages] = useState<[]>([]);
+  const [imageURL, setImageURL] = useState<string | undefined>(undefined);
+  const [imageId, setImageId] = useState<string | undefined>(undefined);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      image: "",
       Prompt: "",
       Keywords: "",
       NegativeKeywords: "",
@@ -59,6 +68,7 @@ export function InputForm() {
   });
 
   const getImage = (data: any) => {
+    data.Image = imageURL;
     fetch("/api/image", {
       method: "POST",
       body: JSON.stringify(data),
@@ -69,33 +79,46 @@ export function InputForm() {
   };
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    getImage(data);
-    toast({
-      title: "Generando Rediseño",
-      description: "Espere unos segundos",
-    });
+    if (imageURL === undefined) {
+      toast({
+        title: "Sube una imagen",
+        description: "Vuelve a intentarlo",
+      });
+    } else {
+      getImage(data);
+      toast({
+        title: "Generando Rediseño",
+        description: "Espere unos segundos",
+      });
+    }
   }
-
   return (
     <>
+      <div>
+        <CldUploadButton
+          onUpload={(result: CldUploadWidgetResults) => {
+            if (result.info !== undefined && typeof result.info !== "string") {
+              console.log(result);
+              setImageURL(result.info.url);
+              setImageId(result.info.public_id);
+            }
+          }}
+          uploadPreset="bwiqbsmi"
+        />
+        {imageId && (
+          <CldImage
+            width="400"
+            height="300"
+            src={imageId}
+            sizes="100vw"
+            alt="Description of my image"
+          />
+        )}
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-2/3 space-y-6">
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Imagen</FormLabel>
-                <FormControl>
-                  <Input placeholder="Image" {...field} />
-                </FormControl>
-                <FormDescription>Imagen de la habitaciòn.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="Prompt"
