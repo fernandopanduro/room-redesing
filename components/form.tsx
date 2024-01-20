@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
+import { useState } from "react";
+import Image from "next/image";
 
 const FormSchema = z.object({
   image: z.string().min(2, {
@@ -43,6 +45,8 @@ const FormSchema = z.object({
 });
 
 export function InputForm() {
+  const [images, setImages] = useState<[]>([]);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -60,7 +64,7 @@ export function InputForm() {
       body: JSON.stringify(data),
     })
       .then(res => res.json())
-      .then(data => console.log(data))
+      .then(data => setImages(data))
       .catch(error => console.log(error));
   };
 
@@ -73,94 +77,109 @@ export function InputForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Imagen</FormLabel>
-              <FormControl>
-                <Input placeholder="Image" {...field} />
-              </FormControl>
-              <FormDescription>Imagen de la habitaciòn.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="Prompt"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Descripcion de tu habitan soñada</FormLabel>
-              <FormControl>
-                <Input placeholder="una habitaciòn moderna" {...field} />
-              </FormControl>
-              <FormDescription>Descripcion para el modelo.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="Keywords"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Palabras clave</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="mejor calidad, extremadamente detallado..."
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>Complementos.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="NegativeKeywords"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Caracteristicas que no quieres</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="cuerpo largo, baja resolución, mala anatomía, malas manos, dedos faltantes, dígitos extra, menos dígitos, recortado, peor calidad, baja calidad..."
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>Caracteristicas negativas.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="NumberImages"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Numero de images</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-2/3 space-y-6">
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Imagen</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecciona un numero" />
-                  </SelectTrigger>
+                  <Input placeholder="Image" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="4">4</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>Numero de resultados</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
+                <FormDescription>Imagen de la habitaciòn.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Prompt"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descripcion de tu habitan soñada</FormLabel>
+                <FormControl>
+                  <Input placeholder="una habitaciòn moderna" {...field} />
+                </FormControl>
+                <FormDescription>Descripcion para el modelo.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="Keywords"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Palabras clave</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="mejor calidad, extremadamente detallado..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Complementos.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="NegativeKeywords"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Caracteristicas que no quieres</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="cuerpo largo, baja resolución, mala anatomía, malas manos, dedos faltantes, dígitos extra, menos dígitos, recortado, peor calidad, baja calidad..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Caracteristicas negativas.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="NumberImages"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Numero de images</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecciona un numero" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="1">1</SelectItem>
+                    <SelectItem value="4">4</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>Numero de resultados</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Rediseñar</Button>
+        </form>
+      </Form>
+      {images.map((image, index) => (
+        <Image
+          key={index}
+          src={image}
+          alt="Image of Room"
+          width={500}
+          height={800}
         />
-        <Button type="submit">Rediseñar</Button>
-      </form>
-    </Form>
+      ))}
+    </>
   );
 }
