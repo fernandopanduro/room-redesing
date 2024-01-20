@@ -26,16 +26,19 @@ import { toast } from "@/components/ui/use-toast";
 
 const FormSchema = z.object({
   image: z.string().min(2, {
-    message: "Image is required.",
+    message: "Se requiere imagen.",
   }),
   Prompt: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "La descripcion debe tener al menos 2 caracteres.",
   }),
   Keywords: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: "Las palabras clave deben tener al menos 2 caracteres.",
   }),
-  numberImages: z.string({
-    required_error: "Please select an email to display.",
+  NegativeKeywords: z.string().min(2, {
+    message: "Palabras negativas must be at least 2 characters.",
+  }),
+  NumberImages: z.string({
+    required_error: "Selecciona una opción.",
   }),
 });
 
@@ -46,19 +49,26 @@ export function InputForm() {
       image: "",
       Prompt: "",
       Keywords: "",
-      numberImages: "1",
+      NegativeKeywords: "",
+      NumberImages: "1",
     },
   });
 
+  const getImage = (data: any) => {
+    fetch("/api/image", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
+  };
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    getImage(data);
     toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+      title: "Generando Rediseño",
+      description: "Espere unos segundos",
     });
   }
 
@@ -70,11 +80,11 @@ export function InputForm() {
           name="image"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>image</FormLabel>
+              <FormLabel>Imagen</FormLabel>
               <FormControl>
                 <Input placeholder="Image" {...field} />
               </FormControl>
-              <FormDescription>Image of room.</FormDescription>
+              <FormDescription>Imagen de la habitaciòn.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -84,13 +94,11 @@ export function InputForm() {
           name="Prompt"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Prompt</FormLabel>
+              <FormLabel>Descripcion de tu habitan soñada</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="una habitaciòn moderna" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display Prompt.
-              </FormDescription>
+              <FormDescription>Descripcion para el modelo.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -100,27 +108,45 @@ export function InputForm() {
           name="Keywords"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Keywords</FormLabel>
+              <FormLabel>Palabras clave</FormLabel>
               <FormControl>
-                <Input placeholder="Room, elegant, funny..." {...field} />
+                <Input
+                  placeholder="mejor calidad, extremadamente detallado..."
+                  {...field}
+                />
               </FormControl>
-              <FormDescription>
-                This is your public display Keywords.
-              </FormDescription>
+              <FormDescription>Complementos.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <FormField
           control={form.control}
-          name="numberImages"
+          name="NegativeKeywords"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Images Numbers</FormLabel>
+              <FormLabel>Caracteristicas que no quieres</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="cuerpo largo, baja resolución, mala anatomía, malas manos, dedos faltantes, dígitos extra, menos dígitos, recortado, peor calidad, baja calidad..."
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>Caracteristicas negativas.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="NumberImages"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Numero de images</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a number images to display" />
+                    <SelectValue placeholder="Selecciona un numero" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -128,12 +154,12 @@ export function InputForm() {
                   <SelectItem value="4">4</SelectItem>
                 </SelectContent>
               </Select>
-              <FormDescription>Number of output images</FormDescription>
+              <FormDescription>Numero de resultados</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Rediseñar</Button>
       </form>
     </Form>
   );
