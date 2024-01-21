@@ -4,6 +4,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import { Badge } from "@/components/ui/badge";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,6 +36,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import Image from "next/image";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 import {
   CldUploadButton,
@@ -46,11 +58,6 @@ const FormSchema = z.object({
     required_error: "Selecciona una opción.",
   }),
 });
-
-type UploadResult = {
-  info: { public_id: string; url: string };
-  event: "success";
-};
 
 export function InputForm() {
   const [images, setImages] = useState<[]>([]);
@@ -93,116 +100,173 @@ export function InputForm() {
     }
   }
   return (
-    <>
-      <div>
-        <CldUploadButton
-          onUpload={(result: CldUploadWidgetResults) => {
-            if (result.info !== undefined && typeof result.info !== "string") {
-              console.log(result);
-              setImageURL(result.info.url);
-              setImageId(result.info.public_id);
-            }
-          }}
-          uploadPreset="bwiqbsmi"
-        />
-        {imageId && (
-          <CldImage
-            width="400"
-            height="300"
-            src={imageId}
-            sizes="100vw"
-            alt="Description of my image"
-          />
-        )}
+    <section className="flex flex-col md:flex-row gap-6 md:gap-12">
+      <div className="flex-grow flex flex-col gap-3 md:gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Tu habitaciòn actual</CardTitle>
+            <CardDescription>Sube una Imagen</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Badge variant="default">
+              {" "}
+              <CldUploadButton
+                onUpload={(result: CldUploadWidgetResults) => {
+                  if (
+                    result.info !== undefined &&
+                    typeof result.info !== "string"
+                  ) {
+                    setImageURL(result.info.url);
+                    setImageId(result.info.public_id);
+                  }
+                }}
+                uploadPreset="bwiqbsmi"
+              />
+            </Badge>
+
+            {imageId && (
+              <CldImage
+                className="mt-5"
+                width="400"
+                height="300"
+                src={imageId}
+                sizes="100vw"
+                alt="Description of my image"
+              />
+            )}
+          </CardContent>
+          <CardFooter>
+            <p>Mejora tu habitaciòn</p>
+          </CardFooter>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Rediseña tu habitaciòn</CardTitle>
+            <CardDescription>Rellena los datos</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="w-2/3 space-y-6">
+                <FormField
+                  control={form.control}
+                  name="Prompt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Descripcion de tu habitan soñada</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="una habitaciòn moderna"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Descripcion para el modelo.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="Keywords"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Palabras clave</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="mejor calidad, extremadamente detallado..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>Complementos.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="NegativeKeywords"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Caracteristicas que no quieres</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="cuerpo largo, baja resolución, mala anatomía, malas manos, dedos faltantes, dígitos extra, menos dígitos, recortado, peor calidad, baja calidad..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Caracteristicas negativas.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="NumberImages"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Numero de images</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Selecciona un numero" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="1">1</SelectItem>
+                          <SelectItem value="4">4</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>Numero de resultados</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Rediseñar</Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
       </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-2/3 space-y-6">
-          <FormField
-            control={form.control}
-            name="Prompt"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Descripcion de tu habitan soñada</FormLabel>
-                <FormControl>
-                  <Input placeholder="una habitaciòn moderna" {...field} />
-                </FormControl>
-                <FormDescription>Descripcion para el modelo.</FormDescription>
-                <FormMessage />
-              </FormItem>
+
+      <div className="flex-grow h-full">
+        <Card>
+          <CardHeader>
+            <CardTitle>Rediseño</CardTitle>
+            <CardDescription>Sugerencia:</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {images.length == 0 && (
+              <>
+                <AspectRatio
+                  ratio={16 / 9}
+                  className="bg-muted rounded-md"></AspectRatio>
+                <AspectRatio
+                  ratio={16 / 9}
+                  className="bg-muted rounded-md mt-3 md:mt-6"></AspectRatio>
+              </>
             )}
-          />
-          <FormField
-            control={form.control}
-            name="Keywords"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Palabras clave</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="mejor calidad, extremadamente detallado..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>Complementos.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="NegativeKeywords"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Caracteristicas que no quieres</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="cuerpo largo, baja resolución, mala anatomía, malas manos, dedos faltantes, dígitos extra, menos dígitos, recortado, peor calidad, baja calidad..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription>Caracteristicas negativas.</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="NumberImages"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Numero de images</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona un numero" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">1</SelectItem>
-                    <SelectItem value="4">4</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormDescription>Numero de resultados</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Rediseñar</Button>
-        </form>
-      </Form>
-      {images.map((image, index) => (
-        <Image
-          key={index}
-          src={image}
-          alt="Image of Room"
-          width={500}
-          height={800}
-        />
-      ))}
-    </>
+
+            {images.map((image, index) => (
+              <Image
+                key={index}
+                src={image}
+                className="rounded-md object-cover"
+                alt="Image of Room"
+                width={500}
+                height={800}
+              />
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    </section>
   );
 }
