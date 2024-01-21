@@ -33,7 +33,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { useState } from "react";
 import Image from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -76,27 +76,29 @@ export function InputForm() {
 
   const getImage = (data: any) => {
     data.Image = imageURL;
+    toast.info("Generando Rediseño", {
+      description: "Espere unos segundos",
+    });
     fetch("/api/image", {
       method: "POST",
       body: JSON.stringify(data),
     })
       .then(res => res.json())
-      .then(data => setImages(data))
+      .then(data => {
+        setImages(data);
+        toast.success("Rediseño finalizado");
+      })
       .catch(error => console.log(error));
   };
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     if (imageURL === undefined) {
-      toast({
-        title: "Sube una imagen",
+      toast("Event has been created.");
+      toast.error("Sube una imagen", {
         description: "Vuelve a intentarlo",
       });
     } else {
       getImage(data);
-      toast({
-        title: "Generando Rediseño",
-        description: "Espere unos segundos",
-      });
     }
   }
   return (
@@ -118,6 +120,7 @@ export function InputForm() {
                   ) {
                     setImageURL(result.info.url);
                     setImageId(result.info.public_id);
+                    toast.success("Imagen subida.");
                   }
                 }}
                 uploadPreset="bwiqbsmi"
@@ -242,7 +245,7 @@ export function InputForm() {
             <CardTitle>Rediseño</CardTitle>
             <CardDescription>Sugerencia:</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col justify-center item">
             {images.length == 0 && (
               <>
                 <AspectRatio
@@ -258,7 +261,7 @@ export function InputForm() {
               <Image
                 key={index}
                 src={image}
-                className="rounded-md object-cover"
+                className="rounded-md object-cover mt-3 md:mt-6"
                 alt="Image of Room"
                 width={500}
                 height={800}
