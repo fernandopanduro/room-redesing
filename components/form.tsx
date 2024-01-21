@@ -8,12 +8,9 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -110,8 +107,7 @@ export function InputForm() {
             <CardDescription>Sube una Imagen</CardDescription>
           </CardHeader>
           <CardContent>
-            <Badge variant="default">
-              {" "}
+            <Button>
               <CldUploadButton
                 onUpload={(result: CldUploadWidgetResults) => {
                   if (
@@ -125,7 +121,7 @@ export function InputForm() {
                 }}
                 uploadPreset="bwiqbsmi"
               />
-            </Badge>
+            </Button>
 
             {imageId && (
               <CldImage
@@ -138,9 +134,6 @@ export function InputForm() {
               />
             )}
           </CardContent>
-          <CardFooter>
-            <p>Mejora tu habitaciòn</p>
-          </CardFooter>
         </Card>
 
         <Card>
@@ -152,7 +145,7 @@ export function InputForm() {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="w-2/3 space-y-6">
+                className="space-y-6">
                 <FormField
                   control={form.control}
                   name="Prompt"
@@ -243,17 +236,16 @@ export function InputForm() {
         <Card>
           <CardHeader>
             <CardTitle>Rediseño</CardTitle>
-            <CardDescription>Sugerencia:</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col justify-center item">
             {images.length == 0 && (
               <>
                 <AspectRatio
                   ratio={16 / 9}
-                  className="bg-muted rounded-md"></AspectRatio>
+                  className="bg-muted/50 rounded-md"></AspectRatio>
                 <AspectRatio
                   ratio={16 / 9}
-                  className="bg-muted rounded-md mt-3 md:mt-6"></AspectRatio>
+                  className="bg-muted/50 rounded-md mt-3 md:mt-6"></AspectRatio>
               </>
             )}
 
