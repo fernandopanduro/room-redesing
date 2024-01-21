@@ -4,8 +4,8 @@ import { ModeToggle } from "@/components/mode-toggle";
 export default function Home() {
   return (
     <main className="min-h-screen p-8 md:p-16">
-      <ModeToggle />
-      <InputForm  />
+      {/* <ModeToggle /> */}
+      <InputForm />
     </main>
   );
 }
