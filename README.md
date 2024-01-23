@@ -4,19 +4,33 @@
 
 El proyecto es una aplicación web construida con NextJS, ReactJS, TailwindCSS, Shadcn UI,  Framer Motion, diseñada para proporcionar para dar sugerencia de diseño de habitaciones.
 
+
 ## Features
 
 - 
+
 
 ## Captura de pantalla
 
 ![Screenshot](/public/preview.png)
 
+
 ## Demo
 
 Puedes probar aplicación visitando la página de la aplicación [aquí](https://room-redesing.vercel.app/).
 
-## Instalación
+
+## 🛠️ Construido 
+
+* [NPM](https://www.npmjs.com/) - Manejador de dependencias
+* [NextJS]([https://www.npmjs.com/](https://nextjs.org/)) - Framework Programacion
+* [React JS](https://create-react-app.dev/) - Libreria principal
+* [Javascript](https://developer.mozilla.org/es/docs/Web/JavaScript) - Lenguaje de programacion secundario
+* [Shadcn UI](https://ui.shadcn.com/docs) - Componentes
+* [TailwindCSS](https://tailwindcss.com/) - Framework CSS
+
+  
+## 🧑‍💻 Instalación
 
 Para configurar el proyecto localmente, siga estos pasos:
 
@@ -38,6 +52,7 @@ Para configurar el proyecto localmente, siga estos pasos:
    npm install
    ```
 
+
 ## Uso
 
 Una vez finalizado el proceso de instalación, puede utilizar los siguientes scripts npm para trabajar con el proyecto:
@@ -55,3 +70,18 @@ Una vez finalizado el proceso de instalación, puede utilizar los siguientes scr
   ```bash
   npm run build
   ```
+
+
+## ✒️ Autor 
+
+* **Fernando Panduro** - *Desarrollador principal* - [fernandopanduro](https://github.com/fernandopanduro)
+
+
+## 🎁 Expresiones de Gratitud 
+
+* Comenta a otros sobre este proyecto 📢
+* Invita una cerveza 🍺 o un café ☕ a alguien del equipo. 
+* Se agradece su atencion 👌.
+
+---
+⌨️ con 💪 por [Fernando](https://github.com/fernandopanduro)
