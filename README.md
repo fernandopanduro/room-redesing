@@ -28,6 +28,7 @@ Puedes probar aplicación visitando la página de la aplicación [aquí](https:/
 * [Javascript](https://developer.mozilla.org/es/docs/Web/JavaScript) - Lenguaje de programacion secundario
 * [Shadcn UI](https://ui.shadcn.com/docs) - Componentes
 * [TailwindCSS](https://tailwindcss.com/) - Framework CSS
+* [Framer Motion](https://www.framer.com/motion/) - Animaciones
 
   
 ## 🧑‍💻 Instalación
