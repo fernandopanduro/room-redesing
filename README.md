@@ -2,7 +2,7 @@
 
 ![Room Redesing](./src/assets/logo.png)
 
-El proyecto es una aplicación web construida con NextJS, ReactJS, TailwindCSS, Shadcn UI, diseñada para proporcionar para dar sugerencia de diseño de habitaciones.
+El proyecto es una aplicación web construida con NextJS, ReactJS, TailwindCSS, Shadcn UI,  Framer Motion, diseñada para proporcionar para dar sugerencia de diseño de habitaciones.
 
 ## Features
 
