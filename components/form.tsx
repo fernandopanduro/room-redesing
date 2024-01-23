@@ -133,6 +133,16 @@ export function InputForm() {
               <CardDescription>Sube una Imagen</CardDescription>
             </CardHeader>
             <CardContent>
+              {imageId && (
+                <CldImage
+                  className="mb-5 mx-auto"
+                  width="400"
+                  height="300"
+                  src={imageId}
+                  sizes="100vw"
+                  alt="Description of my image"
+                />
+              )}
               <div className="w-full bg-card border-slate-100/30 border rounded-md">
                 <CldUploadButton
                   className="w-full py-2 px-4"
@@ -149,17 +159,6 @@ export function InputForm() {
                   uploadPreset="bwiqbsmi"
                 />
               </div>
-
-              {imageId && (
-                <CldImage
-                  className="mt-5"
-                  width="400"
-                  height="300"
-                  src={imageId}
-                  sizes="100vw"
-                  alt="Description of my image"
-                />
-              )}
             </CardContent>
           </Card>
         </motion.div>
