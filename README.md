@@ -23,7 +23,7 @@ Puedes probar aplicación visitando la página de la aplicación [aquí](https:/
 ## 🛠️ Construido 
 
 * [NPM](https://www.npmjs.com/) - Manejador de dependencias
-* [NextJS]([https://www.npmjs.com/](https://nextjs.org/)) - Framework Programacion
+* [NextJS]([https://www.npmjs.com/](https://nextjs.org/) - Framework Programacion
 * [React JS](https://create-react-app.dev/) - Libreria principal
 * [Javascript](https://developer.mozilla.org/es/docs/Web/JavaScript) - Lenguaje de programacion secundario
 * [Shadcn UI](https://ui.shadcn.com/docs) - Componentes
