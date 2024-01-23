@@ -1,6 +1,6 @@
 # Rediseño de habitaciones
 
-![Room Redesing](/public/next.svg)
+![Room Redesing](/public/image-meta.jpeg)
 
 El proyecto es una aplicación web construida con NextJS, ReactJS, TailwindCSS, Shadcn UI,  Framer Motion, diseñada para proporcionar para dar sugerencia de diseño de habitaciones.
 
