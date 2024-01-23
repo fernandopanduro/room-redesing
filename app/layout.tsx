@@ -8,7 +8,9 @@ import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  icons: "/public/pixel-art.jpeg",
+  icons: {
+    icon: "https://room-redesing.vercel.app/icon.jpeg",
+  },
   title: "Room Redesign: 🚀 Transforma tu Espacio con la Potencia de la IA",
   description:
     "Descubre Room Redesign, la innovadora herramienta de diseño de interiores impulsada por inteligencia artificial. 🖼️ Sube una imagen de tu habitación y explora más de 20 estilos de diseño para recibir visualizaciones fotorrealistas en segundos. ¡Da vida a tus ideas de renovación con facilidad y creatividad! ✨",
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "Room Redesign",
     images: [
       {
-        url: "/public/image-meta.jpeg",
+        url: "https://room-redesing.vercel.app/image-meta.jpeg",
         alt: "Room Redesign",
       },
     ],
@@ -39,7 +41,7 @@ export const metadata: Metadata = {
     title: "Room Redesign: 🚀 Transforma tu Espacio con la Potencia de la IA",
     description:
       "Descubre Room Redesign, la innovadora herramienta de diseño de interiores con inteligencia artificial.",
-    images: "/public/image-meta.jpeg",
+    images: "https://room-redesing.vercel.app/image-meta.jpeg",
   },
 };
 
